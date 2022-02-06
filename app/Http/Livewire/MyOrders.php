@@ -6,7 +6,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Order;
 use Auth;
-use App\Notifications\OrderPlacedNotification;
+use App\Notifications\OrderCancelledNotification;
 use App\Models\Admin;
 
 class MyOrders extends Component
@@ -23,7 +23,7 @@ class MyOrders extends Component
 
         $admin = Admin::first();
 
-        $admin->notify(new OrderPlacedNotification($cancelled_order));
+        $admin->notify(new OrderCancelledNotification($cancelled_order));
 
     }
 

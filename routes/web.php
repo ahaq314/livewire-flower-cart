@@ -23,9 +23,6 @@ use App\Http\Controllers\Auth\LoginController;
 
 Auth::routes();
 
-  
-    
-
 //-------------------------User section------------------------------------
 Route::name('user.')->group(function(){
   
@@ -51,8 +48,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
        
     Route::middleware(['guest:admin','PreventBackHistory'])->group(function(){
             Route::get('login', [LoginController::class,'showAdminLoginForm'])->name('login');
-
-    Route::post('login', [LoginController::class,'adminLogin'])->name('login.action');
+            Route::post('login', [LoginController::class,'adminLogin'])->name('login.action');
 
     });
 

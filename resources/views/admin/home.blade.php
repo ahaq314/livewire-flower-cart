@@ -12,7 +12,7 @@
              @forelse($notifications as $notification)
           
                  <div class="alert alert-success" role="alert">
-                 [ {{ $notification -> created_at }}] {{ $notification -> data['order_number'] }} Cancelled!  -- {{ $notification -> data['first_name'] }} {{ $notification -> data['last_name'] }}
+                 [ {{ $notification -> created_at }}] {{ $notification -> data['order_number'] }} {{ $notification -> data['order_status'] }}!  -- {{ $notification -> data['first_name'] }} {{ $notification -> data['last_name'] }}
             <a href="#" class="float-right mark-as-read" data-id="{{ $notification->id }}">
                 Mark as read
             </a>

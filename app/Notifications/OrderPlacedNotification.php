@@ -16,29 +16,40 @@ class OrderPlacedNotification extends Notification
      *
      * @return void
      */
-    public $cancelled_order;
-
-    public function __construct($cancelled_order)
+    public $order;
+    public function __construct($order)
     {
-        $this -> cancelled_order = $cancelled_order;
-
+        $this -> order = $order;
     }
 
-
+    /**
+     * Get the notification's delivery channels.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
     public function via($notifiable)
     {
         return ['database'];
     }
 
+    
 
+    /**
+     * Get the array representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
     public function toArray($notifiable)
     {
         return [
-            'order_number' => $this -> cancelled_order -> order_number,
-            'created_at' => $this -> cancelled_order ->  created_at,
-            'first_name' => $this -> cancelled_order ->  first_name,
-            'last_name' => $this -> cancelled_order ->  last_name,
-            'phone_number' => $this -> cancelled_order ->  phone_number
+            'order_status' => 'New Order',
+            'order_number' => $this -> order -> order_number,
+            'created_at' => $this -> order ->  created_at,
+            'first_name' => $this -> order ->  first_name,
+            'last_name' => $this -> order ->  last_name,
+            'phone_number' => $this -> order ->  phone_number
         ];
     }
 }

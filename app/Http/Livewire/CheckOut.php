@@ -7,6 +7,8 @@ use Auth;
 use App\Models\Order;
 use Cart2;
 use OrderItem;
+use App\Notifications\OrderPlacedNotification;
+use App\Models\Admin;
 
 class CheckOut extends Component
 {
@@ -38,7 +40,7 @@ class CheckOut extends Component
         $validatedData = $this->validate();
 
 
-      $status = \DB::transaction(function(){
+      $neworder = \DB::transaction(function(){
 
          $order = new Order;
 
@@ -86,18 +88,20 @@ class CheckOut extends Component
 
         if ($s1 === true && $s2 === true){
 
-           return true;
+           return $order;
 
         } else {
             
-            return false;
+            return null;
         }
 
 
       });
      
-      if ($status === true){
+      if (!is_null($neworder)){
         Cart2::destroy();
+        $admin = Admin::first();
+        $admin->notify(new OrderPlacedNotification($neworder));
         return redirect() -> route('user.thankyou');
       }
       else {
