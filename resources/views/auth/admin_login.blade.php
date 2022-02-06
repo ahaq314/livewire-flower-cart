@@ -1,4 +1,3 @@
-@extends('layouts.app')
 
 @section('content')
 <div class="container">
@@ -7,17 +6,14 @@
             <div class="card">
 
                   <div class="card-header"> 
-                  {{ isset($url) ? ucwords($url) : ""}} {{ __('Login') }}
+                {{ __('Admin Login') }}
                 </div>
            
                 <div class="card-body">
                   
-                       @isset($url)
+                     
                         <form method="POST" action='{{route('admin.login.action') }}' aria-label="{{ __('Login') }}">
-                        @else
-                        <form method="POST" action="{{ route('login') }}" aria-label="{{ __('Login') }}">
-                        @endisset
-                           
+                       
                         @csrf
 
                         <div class="row mb-3">
@@ -60,19 +56,7 @@
                             </div>
                         </div>
 
-                        <div class="row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
+                     
                     </form>
                 </div>
             </div>

@@ -39,11 +39,6 @@ class RegisterController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('guest');
-        $this->middleware('guest:admin');
-    }
 
      public function register(Request $request) {
          
@@ -68,7 +63,7 @@ class RegisterController extends Controller
             return redirect() -> to($oldUrl);
         }
 
-        return redirect() -> route('product.list');
+        return redirect() -> route('user.product.list');
 
     }
 

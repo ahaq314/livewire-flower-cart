@@ -19,6 +19,7 @@ class Authenticate extends Middleware
 
     public function handle($request, Closure $next, $guard = null)
     {
+
         if (Auth::guard($guard)->guest()) {
             if ($request->ajax() || $request->wantsJson()) {
                 return response('Unauthorized.', 401);
@@ -34,7 +35,12 @@ class Authenticate extends Middleware
     protected function redirectTo($request)
     {
         if (! $request->expectsJson()) {
-            return route('login');
+
+            if($request->routeIs('admin.*')){
+                return route('admin.login');
+            }
+           
+            return route('user.login');
         }
     }
 }

@@ -6,13 +6,24 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Order;
 use Auth;
+use App\Notifications\OrderPlacedNotification;
+use App\Models\Admin;
 
 class MyOrders extends Component
 {
 
     public function cancelOrder($id){
 
-        $status = Auth::user() -> orders() -> find($id) -> update(['status' => 'cancelled']);
+        $cancelled_order = $status = Auth::user() 
+                                        -> orders() 
+                                        -> find($id);
+
+        $cancelled_order-> update(['status' => 'cancelled']);
+
+
+        $admin = Admin::first();
+
+        $admin->notify(new OrderPlacedNotification($cancelled_order));
 
     }
 

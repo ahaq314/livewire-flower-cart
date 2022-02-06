@@ -56,9 +56,9 @@
 
 
         <tr>
-            <td><a href="{{  route('product.list') }}" class="btn btn-primary">Shop</a></td>
+            <td><a href="{{  route('user.product.list') }}" class="btn btn-primary">Shop</a></td>
             @if (Cart2::count())
-            <td><a href="{{  route('cart.checkout') }}" class="btn btn-success">Checkout</a></td>
+            <td><a href="{{  route('user.cart.checkout') }}" class="btn btn-success">Checkout</a></td>
             @endif
           
         </tr>

@@ -12,7 +12,7 @@
             <div class="content">
                <h1>Order Placed !</h1>
                <p>You order has been placed. </p>
-               <a href="#">My Orders</a> <a href="{{  route('product.list') }}">Shop Again</a>
+               <a href="{{ route('user.myorders') }}">My Orders</a> <a href="{{  route('user.product.list') }}">Shop Again</a>
             </div>
             
          </div>

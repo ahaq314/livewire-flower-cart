@@ -1,7 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use  Gloudemans\Shoppingcart\Facades\Cart as Cart2;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\MyOrdersController;
+use App\Http\Controllers\ThankYouController;
+use App\Http\Controllers\Auth\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,56 +19,54 @@ use  Gloudemans\Shoppingcart\Facades\Cart as Cart2;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('product.list');
+
 
 Auth::routes();
 
-//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-
-
-    Route::get('/login/admin', 'App\Http\Controllers\Auth\LoginController@showAdminLoginForm');
-
-    Route::post('/login/admin', 'App\Http\Controllers\Auth\LoginController@adminLogin');
   
-
-    Route::view('/home', 'home')->middleware('auth');
-  
-    Route::group(['as' => 'admin.','prefix'=>'admin','namespace' => 'App\Http\Controllers\Admin', 'middleware' => 'auth:admin'], function () {
     
-            Route::get('/', 'DashboardController@index') -> name('dashboard');
-           // Route::get('/product/create', 'ProductController@create') -> name('product.create');
-            Route::resource('product', ProductController::class);
+
+//-------------------------User section------------------------------------
+Route::name('user.')->group(function(){
+  
+    Route::middleware(['guest:web','PreventBackHistory'])->group(function(){
+         Route::get('/', ProductController::class)->name('product.list');
+         Route::get('/cart', CartController::class)->name('cart.list');
+
+    });
+
+    Route::middleware(['auth:web','PreventBackHistory'])->group(function(){
+             Route::view('/home', 'home')->name('home');
+             Route::get('/checkout', CheckoutController::class)->name('cart.checkout');
+             Route::get('myorders', MyOrdersController::class)->name('myorders');
+             Route::get('thankyou', ThankYouController::class)->name('thankyou');
+             Route::get('logout', [LoginController::class,'logout']);
+    });
 
 });
 
-    Route::get('logout', [App\Http\Controllers\Auth\LoginController::class,'logout']);
+//--------------------- Admin section----------------------------------
+
+Route::prefix('admin')->name('admin.')->group(function(){
+       
+    Route::middleware(['guest:admin','PreventBackHistory'])->group(function(){
+            Route::get('login', [LoginController::class,'showAdminLoginForm'])->name('login');
+
+    Route::post('login', [LoginController::class,'adminLogin'])->name('login.action');
+
+    });
 
 
-Route::view('/cart', 'cart')->name('cart.list');
 
-Route::get('/checkout', function(){
+    Route::middleware(['auth:admin','PreventBackHistory'])->namespace('App\Http\Controllers\Admin')->group(function(){
+            Route::get('/', 'DashboardController@index') -> name('home');
+            Route::get('/product/create', 'ProductController@create') -> name('product.create');
+            Route::post('/mark-as-read', 'DashboardController@markNotification')->name('markNotification');
+            Route::resource('product', ProductController::class);
+    });
 
-    if (Cart2::count()  == 0  ){
+});
 
-        return redirect() -> route('product.list');
-    }
-    return view('checkout');
 
-})->name('cart.checkout')->middleware('auth');
-
-Route::get('thankyou', function(){
-
-    return view('thankyou');
-
-})->name('thankyou')->middleware('auth');
-
-Route::get('myorders', function(){
-
-    return view('myorders');
-
-})->name('myorders')->middleware('auth');
 
 

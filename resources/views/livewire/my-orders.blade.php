@@ -4,7 +4,7 @@
             <div class="col-sm-8">
             <div class="card">
                  <p class="heading pb-1 text-center">My Orders</p>
-               <table clas="table">
+               <table clas="table" wire:loading.delay.class="opacity-50">
                    <tbody>
                     <thead>
                         <tr>
@@ -52,7 +52,8 @@
                                <a href="javascript:;" wire:click="cancelOrder({{ $order -> id }})" onclick="confirm('Are you sure?!') || event.preventDefault();">Cancel</a>
 
                             @endif
-
+<span wire:loading wire:target="cancelOrder({{ $order -> id }})">
+                                      <i class="fa fa-spin fa-spinner"></i>
                            </td>
 
                         </tr>

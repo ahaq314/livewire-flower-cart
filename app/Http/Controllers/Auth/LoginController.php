@@ -36,12 +36,6 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
-        $this->middleware('guest:admin')->except('logout');
-         
-    }
 
     public function login(Request $request){
 
@@ -60,7 +54,7 @@ class LoginController extends Controller
                 return redirect() -> to($oldUrl);
             }
 
-            return redirect() -> route('product.list');
+            return redirect() -> route('user.product.list');
 
         }
 
@@ -68,7 +62,7 @@ class LoginController extends Controller
     }
 
         public function register(Request $request) {
-            dd($request -> all());
+          
 
         $this  -> validate($request, [
 
@@ -89,17 +83,19 @@ class LoginController extends Controller
             return redirect() -> to($oldUrl);
         }
 
-        return redirect() -> route('product.list');
+        return redirect() -> route('user.product.list');
 
     }
 
     public function showAdminLoginForm()
     {
-        return view('auth.login', ['url' => 'admin']);
+        return view('auth.admin_login');
     }
 
     public function adminLogin(Request $request)
     {
+
+
         $this->validate($request, [
             'email'   => 'required|email',
             'password' => 'required|min:6'
@@ -107,15 +103,21 @@ class LoginController extends Controller
 
         if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
 
-            return redirect()->intended('/admin');
+            return redirect()->route('admin.home');
         }
         return back()->withInput($request->only('email', 'remember'));
     }
 
-    function logout(){
+    function logout(Request $request){
 
+    if (Auth::guard('admin')->check()) {
+        Auth::guard('admin')->logout();
+       
+        return redirect() -> route('admin.login');
+    }  else {
         Auth::logout();
-
-        return redirect() -> route('login');
+       
+          return redirect() -> route('login');
     }
+}
 }

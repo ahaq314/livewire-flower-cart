@@ -45,7 +45,7 @@ class User extends Authenticatable
 
     function orders(){
 
-        return $this -> hasMany(Order::class);
+        return $this -> hasMany(Order::class) -> orderBy('id','desc');
     }
 
      function pendingOrders(){

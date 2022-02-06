@@ -98,10 +98,10 @@ class CheckOut extends Component
      
       if ($status === true){
         Cart2::destroy();
-        return redirect() -> route('thankyou');
+        return redirect() -> route('user.thankyou');
       }
       else {
-         return redirect() -> route('product.list') -> with('failed','Problem occured! Try again.');
+         return redirect() -> route('user.product.list') -> with('failed','Problem occured! Try again.');
       }
     }
         
